@@ -1,0 +1,58 @@
+{
+  "name": "space-travel",
+  "version": "1.0.5",
+  "description": "WebGL space scene with lightspeed warp effect",
+  "license": "The Unlicense",
+  "repository": "frequin/space-travel",
+  "author": {
+    "name": "Florent Requin",
+    "email": "florent.requin@gmail.com"
+  },
+  "type": "module",
+  "module": "./dist/space-travel.es.js",
+  "exports": "./dist/space-travel.es.js",
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:demo": "vite build --config demo.vite.config.ts",
+    "serve:demo": "vite preview --config demo.vite.config.ts",
+    "test": "xo && prettier --check \"**/*.{json,css}\"",
+    "prepublishOnly": "npm run test && npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "webgl",
+    "canvas",
+    "threejs",
+    "space",
+    "stars",
+    "lightspeed"
+  ],
+  "dependencies": {
+    "modern-normalize": "^1.0.0",
+    "three": "^0.127.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.127.1",
+    "husky": "^6.0.0",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
+    "typescript": "^4.2.3",
+    "vite": "^2.1.5",
+    "xo": "^0.38.2"
+  },
+  "xo": {
+    "space": true,
+    "prettier": true
+  },
+  "lint-staged": {
+    "*.{ts,js}": "xo --fix",
+    "*.{js,css,md}": "prettier --write"
+  }
+}
