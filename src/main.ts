@@ -16,6 +16,10 @@ const spaceTravel = new SpaceTravel({
 });
 
 document.addEventListener("visibilitychange", () => {
+  if (paused) {
+    return;
+  }
+
   if (document.hidden) {
     spaceTravel.pause();
   } else {

@@ -10,9 +10,33 @@ Use [three.js](https://threejs.org/) JavaScript 3D library under the hood.
 
 ## Usage
 
-### installation
+### Script
 
-_TODO_
+```html
+<canvas id="space-travel"></canvas>
+<script type="module">
+  import SpaceTravel from "https://unpkg.com/space-travel?module";
+  new SpaceTravel({ canvas: document.getElementById("space-travel") }).start();
+</script>
+```
+
+### Module
+
+```console
+$ npm install space-travel
+```
+
+From your application js file :
+
+```js
+import SpaceTravel from "space-travel";
+new SpaceTravel({ canvas: document.getElementById("space-travel") }).start();
+```
+
+### Interactions
+
+You can bind DOM events to interact with instance state (`throttle`, `opacity`) or call methods (`pause()`, `resume()`, `resize()`).
+See [src/main.ts](https://github.com/frequin/space-travel/blob/master/src/main.ts) as an example.
 
 ## Documentation
 
@@ -40,17 +64,19 @@ const scene = new SpaceTravel(parameters);
 
 #### `starfield` parameters
 
-| name                            | value                                                    | description                                                                             |
-| ------------------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `starfield.count`               | _optionnal_ default : `1500`                             | Number of stars in the scene                                                            |
-| `starfield.container`           | _optionnal_ default : `{ length: 40, depth: 40 }`        | Object defining length and depth of the box containing the stars                        |
-| `starfield.colorRange`          | _optionnal_ default : `{ min: 0x3068ff, max: 0xf34f94 }` | Object defining minimum and maximum star random colors (hex number or css string value) |
-| `starfield.thicknessRange`      | _optionnal_ default : `{ min: 0.035, max: 0.06 }`        | Object defining minimum and maximum star thickness related to `throttle` value          |
-| `starfield.rayLengthRange`      | _optionnal_ default : `{ min: 0.1, max: 2.5 }`           | Object defining minimum and maximum star ray length related to `throttle` value         |
-| `starfield.stretchFactorRange`  | _optionnal_ default : `{ min: 0, max: 1.5 }`             | Object defining minimum and maximum star stretch factor related to `throttle` value     |
-| `starfield.shakeSpeedFactor`    | _optionnal_ default : `0.001`                            | Number defining the camera random offset related to `throttle` value                    |
-| `starfield.shakeStrengthFactor` | _optionnal_ default : `0.0035`                           | Number defining the intensity of the shaking                                            |
-| `starfield.speedRange`          | _optionnal_ default : `{ min: 0.5, max: 60 }`            | Object defining minimum and maximum speed of the stars related to `throttle` value      |
+| name                            | value                                                                                | description                                                                             |
+| ------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| `starfield.count`               | _optionnal_ default : `1500`                                                         | Number of stars in the scene                                                            |
+| `starfield.container`           | _optionnal_ default : `{ length: 40, depth: 40 }`                                    | Object defining length and depth of the box containing the stars                        |
+| `starfield.colorRange`          | _optionnal_ default : `{ min: 0x3068ff, max: 0xf34f94 }`                             | Object defining minimum and maximum star random colors (hex number or css string value) |
+| `starfield.thicknessRange`      | _optionnal_ default : `{ min: 0.035, max: 0.06 }`                                    | Object defining minimum and maximum star thickness related to `throttle` value          |
+| `starfield.rayLengthRange`      | _optionnal_ default : `{ min: 0.1, max: 2.5 }`                                       | Object defining minimum and maximum star ray length related to `throttle` value         |
+| `starfield.stretchFactorRange`  | _optionnal_ default : `{ min: 0, max: 1.5 }`                                         | Object defining minimum and maximum star stretch factor related to `throttle` value     |
+| `starfield.shakeSpeedFactor`    | _optionnal_ default : `0.001`                                                        | Number defining the camera random offset related to `throttle` value                    |
+| `starfield.shakeStrengthFactor` | _optionnal_ default : `0.0035`                                                       | Number defining the intensity of the shaking                                            |
+| `starfield.speedRange`          | _optionnal_ default : `{ min: 0.5, max: 60 }`                                        | Object defining minimum and maximum speed of the stars related to `throttle` value      |
+| `starfield.particleTextureUrl`  | _optionnal_ default : `"https://webgl-space-travel.netlify.app/particle-sprite.png"` | Url of the particle texture image                                                       |
+| `starfield.noiseTextureUrl`     | _optionnal_ default : `"https://webgl-space-travel.netlify.app/noise.jpg"`           | Url of the noise image used to generate the shaking effect                              |
 
 #### `nebulae` parameters
 
@@ -61,7 +87,7 @@ Default value :
 ```js
 [
   {
-    textureUrl: "/_dist_/img/textures/clouds1.jpg",
+    textureUrl: "https://webgl-space-travel.netlify.app/clouds1.jpg",
     colorRange: { min: 0xff0042, max: 0xff0042 },
     opacityRange: { min: 0.05, max: 0.2 },
     speedRange: { min: 0.0025, max: 0.175 },
@@ -70,7 +96,7 @@ Default value :
     rotationSpeedRange: { min: 1, max: 30 }
   },
   {
-    textureUrl: "/_dist_/img/textures/noise3.jpg",
+    textureUrl: "https://webgl-space-travel.netlify.app/noise3.jpg",
     colorRange: { min: 0x2659fd, max: 0x2659fd },
     opacityRange: { min: 0.05, max: 0.25 },
     speedRange: { min: 0.003, max: 0.075 },
@@ -79,7 +105,7 @@ Default value :
     rotationSpeedRange: { min: 0.5, max: 25 }
   },
   {
-    textureUrl: "/_dist_/img/textures/noise3.jpg",
+    textureUrl: "https://webgl-space-travel.netlify.app/noise3.jpg",
     colorRange: { min: 0x8500ef, max: 0x8500ef },
     opacityRange: { min: 0.02, max: 0.25 },
     speedRange: { min: 0.002, max: 0.1125 },
@@ -92,15 +118,16 @@ Default value :
 
 #### `nebula` parameters
 
-| name                        | value                                                    | description                                                                                       |
-| --------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `nebula.textureUrl`         | _optionnal_ default : `null`                             | Texture image url                                                                                 |
-| `nebula.colorRange`         | _optionnal_ default : `{ min: 0xff0000, max: 0x0000ff }` | Object defining minimum and maximum nebula color related to `throttle` value                      |
-| `nebula.opacityRange`       | _optionnal_ default : `{ min: 0.5, max: 1 }`             | Object defining minimum and maximum nebula opacity related to `throttle` value                    |
-| `nebula.repeatOffsetRange`  | _optionnal_ default : `{ min: [1, 1], max: [0.15, 1] }`  | Object defining minimum and maximum texture offset related to `throttle` value                    |
-| `nebula.fallOffDistance`    | _optionnal_ default : `-8`                               | Number defining a maximum visibility depth distance for the texture                               |
-| `nebula.speedRange`         | _optionnal_ default : `{ min: 0.0025, max: 0.525 }`      | Object defining minimum and maximum texture speed depth scrolling related to `throttle` value     |
-| `nebula.rotationSpeedRange` | _optionnal_ default : `{ min: 1, max: 45 }`              | Object defining minimum and maximum texture rotation speed (in deg/s) related to `throttle` value |
+| name                        | value                                                                     | description                                                                                       |
+| --------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `nebula.coneModelUrl`       | _optionnal_ default : `"https://webgl-space-travel.netlify.app/cone.glb"` | Url of the object that defines the shape of the nebula                                            |
+| `nebula.textureUrl`         | _optionnal_ default : `null`                                              | Texture image url                                                                                 |
+| `nebula.colorRange`         | _optionnal_ default : `{ min: 0xff0000, max: 0x0000ff }`                  | Object defining minimum and maximum nebula color related to `throttle` value                      |
+| `nebula.opacityRange`       | _optionnal_ default : `{ min: 0.5, max: 1 }`                              | Object defining minimum and maximum nebula opacity related to `throttle` value                    |
+| `nebula.repeatOffsetRange`  | _optionnal_ default : `{ min: [1, 1], max: [0.15, 1] }`                   | Object defining minimum and maximum texture offset related to `throttle` value                    |
+| `nebula.fallOffDistance`    | _optionnal_ default : `-8`                                                | Number defining a maximum visibility depth distance for the texture                               |
+| `nebula.speedRange`         | _optionnal_ default : `{ min: 0.0025, max: 0.525 }`                       | Object defining minimum and maximum texture speed depth scrolling related to `throttle` value     |
+| `nebula.rotationSpeedRange` | _optionnal_ default : `{ min: 1, max: 45 }`                               | Object defining minimum and maximum texture rotation speed (in deg/s) related to `throttle` value |
 
 #### properties
 
