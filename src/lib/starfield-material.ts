@@ -59,8 +59,8 @@ export default class StarfieldMaterial extends ShaderMaterial {
       shakeSpeedFactor = 0.001,
       shakeStrengthFactor = 0.0035,
       speedRange = { min: 0.5, max: 60 },
-      particleTextureUrl = "https://webgl-space-travel.netlify.app/particle-sprite.png",
-      noiseTextureUrl = "https://webgl-space-travel.netlify.app/noise.jpg"
+      particleTextureUrl = "https://webgl-space-travel.requin.pro/particle-sprite.png",
+      noiseTextureUrl = "https://webgl-space-travel.requin.pro/noise.jpg"
     } = parameters;
 
     const textureLoader = new TextureLoader();

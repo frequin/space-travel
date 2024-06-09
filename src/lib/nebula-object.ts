@@ -19,7 +19,7 @@ export default class Nebula extends Object3D {
     parameters: NebulaParameters = {}
   ): Promise<void> {
     const {
-      coneModelUrl = "https://webgl-space-travel.netlify.app/cone.glb",
+      coneModelUrl = "https://webgl-space-travel.requin.pro/cone.glb",
       textureUrl,
       colorRange,
       opacityRange,
