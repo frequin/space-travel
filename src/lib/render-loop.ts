@@ -1,11 +1,9 @@
 export default class RenderLoop {
-  private paused: boolean;
-  private requestId: number;
+  private paused = true;
+  private requestId = 0;
   private readonly onRender: () => void;
 
   constructor(callback: () => void) {
-    this.paused = true;
-    this.requestId = 0;
     this.onRender = () => {
       callback();
       this.requestNextRender();
@@ -32,11 +30,11 @@ export default class RenderLoop {
 
   private cancelNextRender(): void {
     if (this.requestId) {
-      window.cancelAnimationFrame(this.requestId);
+      globalThis.cancelAnimationFrame(this.requestId);
     }
   }
 
   private requestNextRender(): void {
-    this.requestId = window.requestAnimationFrame(this.onRender);
+    this.requestId = globalThis.requestAnimationFrame(this.onRender);
   }
 }

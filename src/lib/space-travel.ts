@@ -1,7 +1,7 @@
 import { WebGLRenderer } from "three";
 import RenderLoop from "./render-loop";
-import SpaceTravelContext, { SpaceTravelContextParameters } from "./space-travel-context";
-import SpaceTravelScene, { SpaceTravelSceneParameters } from "./space-travel-scene";
+import SpaceTravelContext, { type SpaceTravelContextParameters } from "./space-travel-context";
+import SpaceTravelScene, { type SpaceTravelSceneParameters } from "./space-travel-scene";
 
 interface SpaceTravelParameters extends SpaceTravelContextParameters, SpaceTravelSceneParameters {
   canvas: HTMLCanvasElement;

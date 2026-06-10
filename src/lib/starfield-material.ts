@@ -10,7 +10,6 @@ import {
   Vector2,
   Vector3
 } from "three";
-
 import { vertexShader, fragmentShader } from "./starfield-shader";
 import type SpaceTravelContext from "./space-travel-context";
 

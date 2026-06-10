@@ -1,6 +1,5 @@
 import { Color, MathUtils, Matrix4, ShaderMaterial, Texture, TextureLoader, Vector4 } from "three";
 import { vertexShader, fragmentShader } from "./nebula-shader";
-
 import type SpaceTravelContext from "./space-travel-context";
 
 export interface NebulaMaterialParmeters {

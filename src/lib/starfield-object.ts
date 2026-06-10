@@ -1,5 +1,5 @@
 import { BufferGeometry, BufferAttribute, MathUtils, Mesh } from "three";
-import StarfieldMaterial, { StarfieldMaterialParameters } from "./starfield-material";
+import StarfieldMaterial, { type StarfieldMaterialParameters } from "./starfield-material";
 import { random } from "./utils";
 import type SpaceTravelContext from "./space-travel-context";
 

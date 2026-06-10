@@ -1,6 +1,6 @@
-import { Mesh, Object3D } from "three";
+import { type Mesh, Object3D } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import NebulaMaterial, { NebulaMaterialParmeters } from "./nebula-material";
+import NebulaMaterial, { type NebulaMaterialParmeters } from "./nebula-material";
 import type SpaceTravelContext from "./space-travel-context";
 
 export interface NebulaParameters extends NebulaMaterialParmeters {

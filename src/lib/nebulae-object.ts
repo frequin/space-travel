@@ -1,5 +1,5 @@
 import { Group } from "three";
-import Nebula, { NebulaParameters } from "./nebula-object";
+import Nebula, { type NebulaParameters } from "./nebula-object";
 import type SpaceTravelContext from "./space-travel-context";
 
 export type NebulaeParameters = NebulaParameters[];

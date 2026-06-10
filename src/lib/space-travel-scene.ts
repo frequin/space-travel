@@ -1,6 +1,6 @@
-import { Color, Object3D, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from "three";
-import Starfield, { StarfieldParameters } from "./starfield-object";
-import Nebulae, { NebulaeParameters } from "./nebulae-object";
+import { Color, type Object3D, PerspectiveCamera, Scene, Vector3, type WebGLRenderer } from "three";
+import Starfield, { type StarfieldParameters } from "./starfield-object";
+import Nebulae, { type NebulaeParameters } from "./nebulae-object";
 import type SpaceTravelContext from "./space-travel-context";
 
 export interface SpaceTravelSceneParameters {
@@ -10,7 +10,7 @@ export interface SpaceTravelSceneParameters {
 }
 
 export default class SpaceTravelScene extends Scene {
-  private camera: PerspectiveCamera;
+  private readonly camera: PerspectiveCamera;
 
   constructor(context: SpaceTravelContext, parameters: SpaceTravelSceneParameters = {}) {
     super();

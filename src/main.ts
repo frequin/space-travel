@@ -1,7 +1,7 @@
 import "./style.css";
 import SpaceTravel from "./lib/space-travel";
 
-const canvas: HTMLCanvasElement | null = document.querySelector("#space-travel");
+const canvas = document.querySelector<HTMLCanvasElement>("#space-travel");
 
 if (!canvas) {
   throw new Error("Canvas not found");
