@@ -23,6 +23,7 @@
   "scripts": {
     "prepare": "husky",
     "dev": "vite",
+    "sandcastle": "npx tsx .sandcastle/main.ts",
     "build": "tsc && vite build",
     "build:demo": "vite build --config demo.vite.config.ts",
     "serve:demo": "vite preview --config demo.vite.config.ts",
@@ -42,9 +43,11 @@
   ],
   "dependencies": {
     "modern-normalize": "^3.0.1",
-    "three": "^0.127.0"
+    "three": "^0.127.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@ai-hero/sandcastle": "^0.7.0",
     "@microsoft/api-extractor": "^7.58.8",
     "@types/three": "^0.127.1",
     "husky": "^9.1.7",

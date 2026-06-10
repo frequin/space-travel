@@ -1,6 +1,9 @@
 /** @type {import('xo').FlatXoConfig} */
 const xoConfig = [
   {
+    ignores: [".sandcastle/**"]
+  },
+  {
     space: true,
     prettier: true,
     rules: {
