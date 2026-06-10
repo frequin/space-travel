@@ -12,26 +12,27 @@ import {
 } from "three";
 import { vertexShader, fragmentShader } from "./starfield-shader";
 import type SpaceTravelContext from "./space-travel-context";
+import type { Color as ColorValue, Range } from "./types";
 
 export interface StarfieldMaterialParameters {
   container?: {
     length: number;
     depth: number;
   };
-  colorRange?: SpaceTravel.Range<SpaceTravel.Color>;
-  thicknessRange?: SpaceTravel.Range<number>;
-  rayLengthRange?: SpaceTravel.Range<number>;
-  stretchFactorRange?: SpaceTravel.Range<number>;
+  colorRange?: Range<ColorValue>;
+  thicknessRange?: Range<number>;
+  rayLengthRange?: Range<number>;
+  stretchFactorRange?: Range<number>;
   shakeSpeedFactor?: number;
   shakeStrengthFactor?: number;
-  speedRange?: SpaceTravel.Range<number>;
+  speedRange?: Range<number>;
   particleTextureUrl?: string;
   noiseTextureUrl?: string;
 }
 
 export default class StarfieldMaterial extends ShaderMaterial {
   private readonly context: SpaceTravelContext;
-  private readonly speedRange: SpaceTravel.Range<number>;
+  private readonly speedRange: Range<number>;
 
   constructor(context: SpaceTravelContext, parameters: StarfieldMaterialParameters = {}) {
     const {

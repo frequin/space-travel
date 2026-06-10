@@ -1,15 +1,16 @@
 import { Color, MathUtils, Matrix4, ShaderMaterial, Texture, TextureLoader, Vector4 } from "three";
 import { vertexShader, fragmentShader } from "./nebula-shader";
 import type SpaceTravelContext from "./space-travel-context";
+import type { Color as ColorValue, Range } from "./types";
 
-export interface NebulaMaterialParmeters {
+export interface NebulaMaterialParameters {
   textureUrl?: string;
-  colorRange?: SpaceTravel.Range<SpaceTravel.Color>;
-  opacityRange?: SpaceTravel.Range<number>;
-  repeatOffsetRange?: SpaceTravel.Range<[number, number]>;
+  colorRange?: Range<ColorValue>;
+  opacityRange?: Range<number>;
+  repeatOffsetRange?: Range<[number, number]>;
   fallOffDistance?: number;
-  speedRange?: SpaceTravel.Range<number>;
-  rotationSpeedRange?: SpaceTravel.Range<number>;
+  speedRange?: Range<number>;
+  rotationSpeedRange?: Range<number>;
 }
 
 const textureLoader = new TextureLoader();
@@ -28,10 +29,10 @@ const getMap = (textureUrl: string): Texture => {
 
 export default class NebulaMaterial extends ShaderMaterial {
   private readonly context: SpaceTravelContext;
-  private readonly speedRange: SpaceTravel.Range<number>;
-  private readonly rotationSpeedRange: SpaceTravel.Range<number>;
+  private readonly speedRange: Range<number>;
+  private readonly rotationSpeedRange: Range<number>;
 
-  constructor(context: SpaceTravelContext, parameters: NebulaMaterialParmeters) {
+  constructor(context: SpaceTravelContext, parameters: NebulaMaterialParameters) {
     const {
       textureUrl = "",
       colorRange: { min: minColor, max: maxColor } = {

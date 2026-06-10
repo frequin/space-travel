@@ -10,7 +10,13 @@
   },
   "type": "module",
   "module": "./dist/space-travel.es.js",
-  "exports": "./dist/space-travel.es.js",
+  "types": "./dist/space-travel.es.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/space-travel.es.d.ts",
+      "import": "./dist/space-travel.es.js"
+    }
+  },
   "engines": {
     "node": ">=20.19"
   },
@@ -39,11 +45,13 @@
     "three": "^0.127.0"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.58.8",
     "@types/three": "^0.127.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
     "prettier": "^3.8.4",
     "typescript": "^6.0.3",
+    "unplugin-dts": "^1.0.2",
     "vite": "^8.0.16",
     "xo": "^2.0.2"
   },

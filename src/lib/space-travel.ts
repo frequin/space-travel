@@ -3,7 +3,15 @@ import RenderLoop from "./render-loop";
 import SpaceTravelContext, { type SpaceTravelContextParameters } from "./space-travel-context";
 import SpaceTravelScene, { type SpaceTravelSceneParameters } from "./space-travel-scene";
 
-interface SpaceTravelParameters extends SpaceTravelContextParameters, SpaceTravelSceneParameters {
+export type { SpaceTravelContextParameters } from "./space-travel-context";
+export type { SpaceTravelSceneParameters } from "./space-travel-scene";
+export type { StarfieldParameters } from "./starfield-object";
+export type { NebulaParameters } from "./nebula-object";
+export type { NebulaeParameters } from "./nebulae-object";
+export type { Color, Range } from "./types";
+
+export interface SpaceTravelParameters
+  extends SpaceTravelContextParameters, SpaceTravelSceneParameters {
   canvas: HTMLCanvasElement;
 }
 

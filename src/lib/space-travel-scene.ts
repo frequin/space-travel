@@ -2,9 +2,10 @@ import { Color, type Object3D, PerspectiveCamera, Scene, Vector3, type WebGLRend
 import Starfield, { type StarfieldParameters } from "./starfield-object";
 import Nebulae, { type NebulaeParameters } from "./nebulae-object";
 import type SpaceTravelContext from "./space-travel-context";
+import type { Color as ColorValue } from "./types";
 
 export interface SpaceTravelSceneParameters {
-  backgroundColor?: SpaceTravel.Color;
+  backgroundColor?: ColorValue;
   starfield?: StarfieldParameters;
   nebulae?: NebulaeParameters;
 }
