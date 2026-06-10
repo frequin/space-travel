@@ -15,7 +15,7 @@
     "node": ">=20.19"
   },
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "dev": "vite",
     "build": "tsc && vite build",
     "build:demo": "vite build --config demo.vite.config.ts",
@@ -40,8 +40,8 @@
   },
   "devDependencies": {
     "@types/three": "^0.127.1",
-    "husky": "^6.0.0",
-    "lint-staged": "^10.5.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
     "prettier": "^3.8.4",
     "typescript": "^6.0.3",
     "vite": "^8.0.16",
