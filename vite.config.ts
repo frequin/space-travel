@@ -5,7 +5,8 @@ export default defineConfig({
     lib: {
       entry: "src/lib/space-travel.ts",
       name: "SpaceTravel",
-      formats: ["es"]
+      formats: ["es"],
+      fileName: (format) => `space-travel.${format}.js`
     }
   }
 });
