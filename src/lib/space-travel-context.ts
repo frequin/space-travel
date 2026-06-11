@@ -1,4 +1,4 @@
-import { Clock } from "three";
+import Clock from "./clock";
 import { lerpWithPrecision } from "./utils";
 
 export interface SpaceTravelContextParameters {
@@ -30,7 +30,7 @@ export default class SpaceTravelContext {
       startOpacity = 0
     } = parameters;
 
-    this.clock = new Clock(false);
+    this.clock = new Clock();
     this.delta = 0;
     this.throttle = throttle;
     this.throttleTarget = throttle;

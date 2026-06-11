@@ -3,7 +3,6 @@ import {
   Box3,
   Color,
   DoubleSide,
-  MathUtils,
   Matrix4,
   ShaderMaterial,
   TextureLoader,
@@ -11,6 +10,7 @@ import {
   Vector3
 } from "three";
 import { vertexShader, fragmentShader } from "./starfield-shader";
+import { mapLinear } from "./utils";
 import type SpaceTravelContext from "./space-travel-context";
 import type { Color as ColorValue, Range } from "./types";
 
@@ -155,7 +155,7 @@ export default class StarfieldMaterial extends ShaderMaterial {
     const { delta, throttle, opacity } = this.context;
     this.uniforms.throttle.value = throttle;
     this.uniforms.globalOpacity.value = opacity;
-    const speed = MathUtils.mapLinear(throttle, 0, 1, this.speedRange.min, this.speedRange.max);
+    const speed = mapLinear(throttle, 0, 1, this.speedRange.min, this.speedRange.max);
     this.uniforms.distance.value += delta * speed;
   }
 }

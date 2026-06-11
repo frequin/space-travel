@@ -1,5 +1,6 @@
-import { Color, MathUtils, Matrix4, ShaderMaterial, Texture, TextureLoader, Vector4 } from "three";
+import { Color, Matrix4, ShaderMaterial, Texture, TextureLoader, Vector4 } from "three";
 import { vertexShader, fragmentShader } from "./nebula-shader";
+import { degToRad, mapLinear } from "./utils";
 import type SpaceTravelContext from "./space-travel-context";
 import type { Color as ColorValue, Range } from "./types";
 
@@ -107,15 +108,15 @@ export default class NebulaMaterial extends ShaderMaterial {
     const { delta, throttle, opacity } = this.context;
     this.uniforms.throttle.value = throttle;
     this.uniforms.globalOpacity.value = opacity;
-    const speed = MathUtils.mapLinear(throttle, 0, 1, this.speedRange.min, this.speedRange.max);
+    const speed = mapLinear(throttle, 0, 1, this.speedRange.min, this.speedRange.max);
     this.uniforms.distance.value += delta * speed;
-    const rotationSpeed = MathUtils.mapLinear(
+    const rotationSpeed = mapLinear(
       throttle,
       0,
       1,
       this.rotationSpeedRange.min,
       this.rotationSpeedRange.max
     );
-    this.uniforms.rotationDistance.value += MathUtils.degToRad(delta * rotationSpeed);
+    this.uniforms.rotationDistance.value += degToRad(delta * rotationSpeed);
   }
 }

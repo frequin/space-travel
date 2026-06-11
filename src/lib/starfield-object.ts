@@ -1,6 +1,6 @@
-import { BufferGeometry, BufferAttribute, MathUtils, Mesh } from "three";
+import { BufferGeometry, BufferAttribute, Mesh } from "three";
 import StarfieldMaterial, { type StarfieldMaterialParameters } from "./starfield-material";
-import { random } from "./utils";
+import { mapLinear, random } from "./utils";
 import type SpaceTravelContext from "./space-travel-context";
 
 export interface StarfieldParameters extends StarfieldMaterialParameters {
@@ -20,9 +20,9 @@ const createGeometry = (
   const bufferGeometry = new BufferGeometry();
 
   for (let index = 0; index < count; index++) {
-    const posX = MathUtils.mapLinear(random(), 0, 1, -containerLength / 2, containerLength / 2);
-    const posY = MathUtils.mapLinear(random(), 0, 1, -containerLength / 2, containerLength / 2);
-    const posZ = MathUtils.mapLinear(random(), 0, 1, -containerDepth / 2, containerDepth / 2);
+    const posX = mapLinear(random(), 0, 1, -containerLength / 2, containerLength / 2);
+    const posY = mapLinear(random(), 0, 1, -containerLength / 2, containerLength / 2);
+    const posZ = mapLinear(random(), 0, 1, -containerDepth / 2, containerDepth / 2);
     positions.push(posX, posY, posZ, posX, posY, posZ, posX, posY, posZ, posX, posY, posZ);
     uvs.push(0, 1, 1, 1, 0, 0, 1, 0);
     corners.push(0, 1, 2, 3);
