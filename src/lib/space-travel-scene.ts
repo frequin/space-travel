@@ -1,6 +1,6 @@
-import { Color, type Object3D, PerspectiveCamera, Scene, Vector3, type WebGLRenderer } from "three";
+import { Camera, Color, type OGLRenderingContext, type Renderer, Transform } from "ogl";
 import Starfield, { type StarfieldParameters } from "./starfield-object";
-import Nebulae, { type NebulaeParameters } from "./nebulae-object";
+import type { NebulaeParameters } from "./nebulae-object";
 import type SpaceTravelContext from "./space-travel-context";
 import type { Color as ColorValue } from "./types";
 
@@ -10,50 +10,40 @@ export interface SpaceTravelSceneParameters {
   nebulae?: NebulaeParameters;
 }
 
-export default class SpaceTravelScene extends Scene {
-  private readonly camera: PerspectiveCamera;
+export default class SpaceTravelScene extends Transform {
+  private readonly camera: Camera;
 
-  constructor(context: SpaceTravelContext, parameters: SpaceTravelSceneParameters = {}) {
+  constructor(
+    gl: OGLRenderingContext,
+    context: SpaceTravelContext,
+    parameters: SpaceTravelSceneParameters = {}
+  ) {
     super();
 
-    const {
-      backgroundColor = 0x08000f,
-      starfield: starfieldParameters,
-      nebulae: nebulaeParameters
-    } = parameters;
+    const { backgroundColor = 0x08000f, starfield: starfieldParameters } = parameters;
 
-    const starfield = new Starfield(context, starfieldParameters);
-    const nebulae = new Nebulae(context, nebulaeParameters);
+    const starfield = new Starfield(gl, context, starfieldParameters);
 
-    this.camera = this.createCamera();
-    this.add(this.camera);
-    this.setObjectRenderOrder(nebulae, 0);
-    this.setObjectRenderOrder(starfield, 1);
-    this.camera.add(nebulae);
-    this.camera.add(starfield);
-    this.frustumCulled = false;
-    this.background = new Color(backgroundColor);
+    this.camera = this.createCamera(gl);
+    this.addChild(this.camera);
+    this.camera.addChild(starfield);
+
+    const [r, g, b] = new Color(backgroundColor);
+    gl.clearColor(r, g, b, 1);
   }
 
-  render(renderer: WebGLRenderer): void {
-    renderer.render(this, this.camera);
+  render(renderer: Renderer): void {
+    renderer.render({ scene: this, camera: this.camera });
   }
 
   setCameraAspectRatio(aspectRatio: number): void {
-    this.camera.aspect = aspectRatio;
-    this.camera.updateProjectionMatrix();
+    this.camera.perspective({ aspect: aspectRatio });
   }
 
-  private createCamera(): PerspectiveCamera {
-    const camera = new PerspectiveCamera(60, 1, 0.01, 500);
+  private createCamera(gl: OGLRenderingContext): Camera {
+    const camera = new Camera(gl, { fov: 60, aspect: 1, near: 0.01, far: 500 });
     camera.position.set(0, 0, -4);
-    camera.lookAt(new Vector3(0, 0, 0));
+    camera.lookAt([0, 0, 0]);
     return camera;
-  }
-
-  private setObjectRenderOrder(parentObject: Object3D, order: number): void {
-    parentObject.traverse((object) => {
-      object.renderOrder = order;
-    });
   }
 }

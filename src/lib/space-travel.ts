@@ -1,4 +1,4 @@
-import { WebGLRenderer } from "three";
+import { Renderer } from "ogl";
 import RenderLoop from "./render-loop";
 import SpaceTravelContext, { type SpaceTravelContextParameters } from "./space-travel-context";
 import SpaceTravelScene, { type SpaceTravelSceneParameters } from "./space-travel-scene";
@@ -16,9 +16,10 @@ export interface SpaceTravelParameters
 }
 
 export default class SpaceTravel {
+  private readonly canvas: HTMLCanvasElement;
   private readonly context: SpaceTravelContext;
   private readonly scene: SpaceTravelScene;
-  private readonly renderer: WebGLRenderer;
+  private readonly renderer: Renderer;
   private readonly renderLoop: RenderLoop;
 
   constructor(parameters: SpaceTravelParameters) {
@@ -38,6 +39,7 @@ export default class SpaceTravel {
       throw new TypeError("Invalid canvas");
     }
 
+    this.canvas = canvas;
     this.context = new SpaceTravelContext({
       throttle,
       throttleLerpFactor,
@@ -45,13 +47,13 @@ export default class SpaceTravel {
       startOpacity,
       opacityLerpFactor
     });
-    this.scene = new SpaceTravelScene(this.context, {
+    this.renderer = this.createRenderer(canvas);
+    this.scene = new SpaceTravelScene(this.renderer.gl, this.context, {
       backgroundColor,
       starfield,
       nebulae
     });
-    this.renderer = this.createRenderer(canvas);
-    this.setSize(canvas);
+    this.setSize();
     this.renderLoop = new RenderLoop(this.onRender.bind(this));
   }
 
@@ -87,20 +89,23 @@ export default class SpaceTravel {
   }
 
   resize(): void {
-    this.setSize(this.renderer.domElement);
+    this.setSize();
   }
 
-  private createRenderer(canvas: HTMLCanvasElement): WebGLRenderer {
-    const renderer = new WebGLRenderer({ canvas });
-    const pixelRatio = Math.min(window.devicePixelRatio, 1.5);
-    renderer.setPixelRatio(pixelRatio);
-    return renderer;
+  private createRenderer(canvas: HTMLCanvasElement): Renderer {
+    const dpr = Math.min(window.devicePixelRatio, 1.5);
+    return new Renderer({ canvas, dpr });
   }
 
-  private setSize(canvas: HTMLCanvasElement) {
-    const width = canvas.offsetWidth;
-    const height = canvas.offsetHeight;
-    this.renderer.setSize(width, height, false);
+  // Mirrors three's renderer.setSize(w, h, /*updateStyle*/ false): drawing
+  // buffer follows DPR, CSS layout is left to the consumer's stylesheet.
+  private setSize(): void {
+    const width = this.canvas.offsetWidth;
+    const height = this.canvas.offsetHeight;
+    this.renderer.width = width;
+    this.renderer.height = height;
+    this.canvas.width = Math.round(width * this.renderer.dpr);
+    this.canvas.height = Math.round(height * this.renderer.dpr);
     this.scene.setCameraAspectRatio(width / height);
   }
 

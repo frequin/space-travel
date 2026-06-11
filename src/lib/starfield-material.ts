@@ -1,14 +1,4 @@
-import {
-  AdditiveBlending,
-  Box3,
-  Color,
-  DoubleSide,
-  Matrix4,
-  ShaderMaterial,
-  TextureLoader,
-  Vector2,
-  Vector3
-} from "three";
+import { Color, Mat4, type OGLRenderingContext, Program, Texture, Vec2, Vec3 } from "ogl";
 import { vertexShader, fragmentShader } from "./starfield-shader";
 import { mapLinear } from "./utils";
 import type SpaceTravelContext from "./space-travel-context";
@@ -30,11 +20,24 @@ export interface StarfieldMaterialParameters {
   noiseTextureUrl?: string;
 }
 
-export default class StarfieldMaterial extends ShaderMaterial {
+const loadImageTexture = (texture: Texture, url: string): void => {
+  const image = new Image();
+  image.crossOrigin = "anonymous";
+  image.addEventListener("load", () => {
+    texture.image = image;
+  });
+  image.src = url;
+};
+
+export default class StarfieldMaterial extends Program {
   private readonly context: SpaceTravelContext;
   private readonly speedRange: Range<number>;
 
-  constructor(context: SpaceTravelContext, parameters: StarfieldMaterialParameters = {}) {
+  constructor(
+    gl: OGLRenderingContext,
+    context: SpaceTravelContext,
+    parameters: StarfieldMaterialParameters = {}
+  ) {
     const {
       container: { length: containerLength, depth: containerDepth } = {
         length: 40,
@@ -63,92 +66,50 @@ export default class StarfieldMaterial extends ShaderMaterial {
       noiseTextureUrl = "https://webgl-space-travel.requin.pro/noise.jpg"
     } = parameters;
 
-    const textureLoader = new TextureLoader();
-    const particleTexture = textureLoader.load(particleTextureUrl);
-    const noiseTexture = textureLoader.load(noiseTextureUrl);
-    const wrap = 1000;
-    noiseTexture.wrapT = wrap;
-    noiseTexture.wrapS = wrap;
+    const particleTexture = new Texture(gl);
+    loadImageTexture(particleTexture, particleTextureUrl);
+    const noiseTexture = new Texture(gl, {
+      wrapS: gl.REPEAT,
+      wrapT: gl.REPEAT
+    });
+    loadImageTexture(noiseTexture, noiseTextureUrl);
 
-    const bbox = new Box3(
-      new Vector3(-containerLength / 2, -containerLength / 2, -containerDepth / 2),
-      new Vector3(containerLength / 2, containerLength / 2, containerDepth / 2)
-    );
-
-    super({
-      vertexShader,
-      fragmentShader,
+    super(gl, {
+      vertex: vertexShader,
+      fragment: fragmentShader,
       uniforms: {
-        globalOpacity: {
-          value: 1
-        },
-        map: {
-          value: particleTexture
-        },
-        noise: {
-          value: noiseTexture
-        },
+        globalOpacity: { value: 1 },
+        map: { value: particleTexture },
+        noise: { value: noiseTexture },
         bboxMin: {
-          value: bbox.min
+          value: new Vec3(-containerLength / 2, -containerLength / 2, -containerDepth / 2)
         },
         bboxMax: {
-          value: bbox.max
+          value: new Vec3(containerLength / 2, containerLength / 2, containerDepth / 2)
         },
-        offset: {
-          value: new Vector2(0, 0)
-        },
-        direction: {
-          value: new Vector3(0, 0, 1)
-        },
-        rotation: {
-          value: new Matrix4()
-        },
-        color1: {
-          value: new Color(minColor)
-        },
-        color2: {
-          value: new Color(maxColor)
-        },
-        minThickness: {
-          value: minThickness
-        },
-        maxThickness: {
-          value: maxThickness
-        },
-        minRayLength: {
-          value: minRayLength
-        },
-        maxRayLength: {
-          value: maxRayLength
-        },
-        minStretchFactor: {
-          value: minStretchFactor
-        },
-        maxStretchFactor: {
-          value: maxStretchFactor
-        },
-        shakeSpeedFactor: {
-          value: shakeSpeedFactor
-        },
-        shakeStrengthFactor: {
-          value: shakeStrengthFactor
-        },
-        throttle: {
-          value: 0
-        },
-        distance: {
-          value: 0
-        }
-      }
+        offset: { value: new Vec2(0, 0) },
+        direction: { value: new Vec3(0, 0, 1) },
+        rotation: { value: new Mat4() },
+        color1: { value: new Color(minColor) },
+        color2: { value: new Color(maxColor) },
+        minThickness: { value: minThickness },
+        maxThickness: { value: maxThickness },
+        minRayLength: { value: minRayLength },
+        maxRayLength: { value: maxRayLength },
+        minStretchFactor: { value: minStretchFactor },
+        maxStretchFactor: { value: maxStretchFactor },
+        shakeSpeedFactor: { value: shakeSpeedFactor },
+        shakeStrengthFactor: { value: shakeStrengthFactor },
+        throttle: { value: 0 },
+        distance: { value: 0 }
+      },
+      depthWrite: false,
+      cullFace: false
     });
 
     this.context = context;
     this.speedRange = speedRange;
-
-    this.depthWrite = false;
-    this.transparent = true;
-    this.side = DoubleSide;
-    this.blending = AdditiveBlending;
+    this.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
   }
 
   update(): void {

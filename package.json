@@ -43,6 +43,7 @@
   ],
   "dependencies": {
     "modern-normalize": "^3.0.1",
+    "ogl": "^1.0.11",
     "three": "^0.127.0",
     "zod": "^4.4.3"
   },
