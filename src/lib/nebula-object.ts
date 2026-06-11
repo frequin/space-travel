@@ -1,59 +1,32 @@
-import { type Mesh, Object3D } from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { BufferAttribute, BufferGeometry, Mesh } from "three";
+import { coneIndices, conePositions, coneUvs } from "./cone-geometry";
 import NebulaMaterial, { type NebulaMaterialParameters } from "./nebula-material";
 import type SpaceTravelContext from "./space-travel-context";
 
-export interface NebulaParameters extends NebulaMaterialParameters {
-  coneModelUrl?: string;
-}
+export type NebulaParameters = NebulaMaterialParameters;
 
-export default class Nebula extends Object3D {
-  constructor(context: SpaceTravelContext, parameters: NebulaParameters) {
-    super();
+const createConeGeometry = (): BufferGeometry => {
+  const geometry = new BufferGeometry();
+  geometry.setAttribute("position", new BufferAttribute(conePositions, 3));
+  geometry.setAttribute("uv", new BufferAttribute(coneUvs, 2));
+  geometry.setIndex(new BufferAttribute(coneIndices, 1));
+  return geometry;
+};
 
-    void this.createConeModel(context, parameters);
-  }
+export default class Nebula extends Mesh {
+  constructor(context: SpaceTravelContext, parameters: NebulaParameters = {}) {
+    const material = new NebulaMaterial(context, parameters);
+    super(createConeGeometry(), material);
 
-  async createConeModel(
-    context: SpaceTravelContext,
-    parameters: NebulaParameters = {}
-  ): Promise<void> {
-    const {
-      coneModelUrl = "https://webgl-space-travel.requin.pro/cone.glb",
-      textureUrl,
-      colorRange,
-      opacityRange,
-      repeatOffsetRange,
-      fallOffDistance,
-      speedRange,
-      rotationSpeedRange
-    } = parameters;
-    const {
-      scene: {
-        children: [coneModel]
-      }
-    } = await new GLTFLoader().loadAsync(coneModelUrl);
-    const coneModelMesh = coneModel as Mesh;
+    // Matches the original cone.glb node rotation (90° around X) followed by
+    // the runtime override of rotation.z. Scale/position carried over from
+    // the previous GLTFLoader-based wiring.
+    this.rotation.set(Math.PI / 2, 0, -Math.PI);
+    this.scale.set(2, 1, 2);
+    this.position.z -= 5;
 
-    const material = new NebulaMaterial(context, {
-      textureUrl,
-      colorRange,
-      opacityRange,
-      repeatOffsetRange,
-      fallOffDistance,
-      speedRange,
-      rotationSpeedRange
-    });
-
-    coneModelMesh.material = material;
-    coneModelMesh.scale.set(2, 1, 2);
-    coneModelMesh.position.z -= 5;
-    coneModelMesh.rotation.z = -Math.PI;
-
-    coneModelMesh.onBeforeRender = () => {
+    this.onBeforeRender = () => {
       material.update();
     };
-
-    this.add(coneModelMesh);
   }
 }
