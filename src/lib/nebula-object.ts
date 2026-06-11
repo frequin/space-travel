@@ -18,9 +18,8 @@ export default class Nebula extends Mesh {
     const material = new NebulaMaterial(context, parameters);
     super(createConeGeometry(), material);
 
-    // Matches the original cone.glb node rotation (90° around X) followed by
-    // the runtime override of rotation.z. Scale/position carried over from
-    // the previous GLTFLoader-based wiring.
+    // The X rotation reproduces the cone.glb node transform that was baked
+    // out of the raw arrays; the rest is scene placement.
     this.rotation.set(Math.PI / 2, 0, -Math.PI);
     this.scale.set(2, 1, 2);
     this.position.z -= 5;
