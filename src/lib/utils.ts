@@ -1,11 +1,13 @@
 // Park-Miller LCG, matching three's MathUtils.seededRandom() sequence and
-// initial seed (1234567) so the seeded star layout is byte-identical.
+// initial seed so the seeded star layout is identical.
+const lcgModulus = 2147483647; // 2^31 - 1
+const lcgMultiplier = 16807;
 let seed = 1234567;
 
-export const random = (s?: number): number => {
-  if (s !== undefined) seed = s % 2147483647;
-  seed = (seed * 16807) % 2147483647;
-  return (seed - 1) / 2147483646;
+export const random = (newSeed?: number): number => {
+  if (newSeed !== undefined) seed = newSeed % lcgModulus;
+  seed = (seed * lcgMultiplier) % lcgModulus;
+  return (seed - 1) / (lcgModulus - 1);
 };
 
 // eslint-disable-next-line max-params
