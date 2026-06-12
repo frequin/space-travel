@@ -6,7 +6,7 @@ WebGL space scene with lightspeed warp effect.
 
 **Strongly** inspired by https://nova.app/. Entirely rewritten in typescript.
 
-Use [three.js](https://threejs.org/) JavaScript 3D library under the hood.
+Use [OGL](https://github.com/oframe/ogl) minimal WebGL library under the hood.
 
 ## Usage
 
