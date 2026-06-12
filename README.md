@@ -118,16 +118,15 @@ Default value :
 
 #### `nebula` parameters
 
-| name                        | value                                                                    | description                                                                                       |
-| --------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
-| `nebula.coneModelUrl`       | _optionnal_ default : `"https://webgl-space-travel.requin.pro/cone.glb"` | Url of the object that defines the shape of the nebula                                            |
-| `nebula.textureUrl`         | _optionnal_ default : `null`                                             | Texture image url                                                                                 |
-| `nebula.colorRange`         | _optionnal_ default : `{ min: 0xff0000, max: 0x0000ff }`                 | Object defining minimum and maximum nebula color related to `throttle` value                      |
-| `nebula.opacityRange`       | _optionnal_ default : `{ min: 0.5, max: 1 }`                             | Object defining minimum and maximum nebula opacity related to `throttle` value                    |
-| `nebula.repeatOffsetRange`  | _optionnal_ default : `{ min: [1, 1], max: [0.15, 1] }`                  | Object defining minimum and maximum texture offset related to `throttle` value                    |
-| `nebula.fallOffDistance`    | _optionnal_ default : `-8`                                               | Number defining a maximum visibility depth distance for the texture                               |
-| `nebula.speedRange`         | _optionnal_ default : `{ min: 0.0025, max: 0.525 }`                      | Object defining minimum and maximum texture speed depth scrolling related to `throttle` value     |
-| `nebula.rotationSpeedRange` | _optionnal_ default : `{ min: 1, max: 45 }`                              | Object defining minimum and maximum texture rotation speed (in deg/s) related to `throttle` value |
+| name                        | value                                                    | description                                                                                       |
+| --------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `nebula.textureUrl`         | _optionnal_ default : `""`                               | Texture image url                                                                                 |
+| `nebula.colorRange`         | _optionnal_ default : `{ min: 0xff0000, max: 0x0000ff }` | Object defining minimum and maximum nebula color related to `throttle` value                      |
+| `nebula.opacityRange`       | _optionnal_ default : `{ min: 0.5, max: 1 }`             | Object defining minimum and maximum nebula opacity related to `throttle` value                    |
+| `nebula.repeatOffsetRange`  | _optionnal_ default : `{ min: [1, 1], max: [0.15, 1] }`  | Object defining minimum and maximum texture offset related to `throttle` value                    |
+| `nebula.fallOffDistance`    | _optionnal_ default : `-8`                               | Number defining a maximum visibility depth distance for the texture                               |
+| `nebula.speedRange`         | _optionnal_ default : `{ min: 0.0025, max: 0.525 }`      | Object defining minimum and maximum texture speed depth scrolling related to `throttle` value     |
+| `nebula.rotationSpeedRange` | _optionnal_ default : `{ min: 1, max: 45 }`              | Object defining minimum and maximum texture rotation speed (in deg/s) related to `throttle` value |
 
 #### properties
 
