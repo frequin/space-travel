@@ -1,5 +1,6 @@
 import { Color, Mat4, type OGLRenderingContext, Program, Texture, Vec2, Vec3 } from "ogl";
 import { vertexShader, fragmentShader } from "./starfield-shader";
+import { loadImageTexture } from "./texture";
 import { mapLinear } from "./utils";
 import type SpaceTravelContext from "./space-travel-context";
 import type { Color as ColorValue, Range } from "./types";
@@ -19,15 +20,6 @@ export interface StarfieldMaterialParameters {
   particleTextureUrl?: string;
   noiseTextureUrl?: string;
 }
-
-const loadImageTexture = (texture: Texture, url: string): void => {
-  const image = new Image();
-  image.crossOrigin = "anonymous";
-  image.addEventListener("load", () => {
-    texture.image = image;
-  });
-  image.src = url;
-};
 
 export default class StarfieldMaterial extends Program {
   private readonly context: SpaceTravelContext;

@@ -1,5 +1,6 @@
 import { Color, Mat4, type OGLRenderingContext, Program, Texture, Vec4 } from "ogl";
 import { vertexShader, fragmentShader } from "./nebula-shader";
+import { loadImageTexture } from "./texture";
 import { degToRad, mapLinear } from "./utils";
 import type SpaceTravelContext from "./space-travel-context";
 import type { Color as ColorValue, Range } from "./types";
@@ -20,12 +21,7 @@ const getMap = (gl: OGLRenderingContext, textureUrl: string): Texture => {
   }
 
   const texture = new Texture(gl, { wrapS: gl.REPEAT, wrapT: gl.REPEAT });
-  const image = new Image();
-  image.crossOrigin = "anonymous";
-  image.addEventListener("load", () => {
-    texture.image = image;
-  });
-  image.src = textureUrl;
+  loadImageTexture(texture, textureUrl);
   return texture;
 };
 
