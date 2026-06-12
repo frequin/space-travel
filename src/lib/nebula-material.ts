@@ -1,4 +1,4 @@
-import { Color, Matrix4, ShaderMaterial, Texture, TextureLoader, Vector4 } from "three";
+import { Color, Mat4, type OGLRenderingContext, Program, Texture, Vec4 } from "ogl";
 import { vertexShader, fragmentShader } from "./nebula-shader";
 import { degToRad, mapLinear } from "./utils";
 import type SpaceTravelContext from "./space-travel-context";
@@ -14,26 +14,31 @@ export interface NebulaMaterialParameters {
   rotationSpeedRange?: Range<number>;
 }
 
-const textureLoader = new TextureLoader();
-
-const getMap = (textureUrl: string): Texture => {
+const getMap = (gl: OGLRenderingContext, textureUrl: string): Texture => {
   if (!textureUrl) {
-    return new Texture();
+    return new Texture(gl);
   }
 
-  const texture = textureLoader.load(textureUrl);
-  const wrap = 1000;
-  texture.wrapS = wrap;
-  texture.wrapT = wrap;
+  const texture = new Texture(gl, { wrapS: gl.REPEAT, wrapT: gl.REPEAT });
+  const image = new Image();
+  image.crossOrigin = "anonymous";
+  image.addEventListener("load", () => {
+    texture.image = image;
+  });
+  image.src = textureUrl;
   return texture;
 };
 
-export default class NebulaMaterial extends ShaderMaterial {
+export default class NebulaMaterial extends Program {
   private readonly context: SpaceTravelContext;
   private readonly speedRange: Range<number>;
   private readonly rotationSpeedRange: Range<number>;
 
-  constructor(context: SpaceTravelContext, parameters: NebulaMaterialParameters) {
+  constructor(
+    gl: OGLRenderingContext,
+    context: SpaceTravelContext,
+    parameters: NebulaMaterialParameters
+  ) {
     const {
       textureUrl = "",
       colorRange: { min: minColor, max: maxColor } = {
@@ -50,15 +55,15 @@ export default class NebulaMaterial extends ShaderMaterial {
       rotationSpeedRange = { min: 1, max: 45 }
     } = parameters;
 
-    super({
-      vertexShader,
-      fragmentShader,
+    super(gl, {
+      vertex: vertexShader,
+      fragment: fragmentShader,
       uniforms: {
         globalOpacity: {
           value: 1
         },
         map: {
-          value: getMap(textureUrl)
+          value: getMap(gl, textureUrl)
         },
         colorMin: {
           value: new Color(minColor)
@@ -73,16 +78,16 @@ export default class NebulaMaterial extends ShaderMaterial {
           value: maxOpacity
         },
         offsetRepeatMin: {
-          value: new Vector4(1, 0, ...minRepeatOffset)
+          value: new Vec4(1, 0, ...minRepeatOffset)
         },
         offsetRepeatMax: {
-          value: new Vector4(1, 0, ...maxRepeatOffset)
+          value: new Vec4(1, 0, ...maxRepeatOffset)
         },
         fallOffDistance: {
           value: fallOffDistance
         },
         rotation: {
-          value: new Matrix4()
+          value: new Mat4()
         },
         throttle: {
           value: 0
@@ -93,15 +98,14 @@ export default class NebulaMaterial extends ShaderMaterial {
         rotationDistance: {
           value: 0
         }
-      }
+      },
+      transparent: true,
+      depthWrite: false
     });
 
     this.context = context;
     this.speedRange = speedRange;
     this.rotationSpeedRange = rotationSpeedRange;
-
-    this.transparent = true;
-    this.depthWrite = false;
   }
 
   update(): void {

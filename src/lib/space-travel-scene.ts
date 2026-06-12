@@ -1,6 +1,6 @@
 import { Camera, Color, type OGLRenderingContext, type Renderer, Transform } from "ogl";
 import Starfield, { type StarfieldParameters } from "./starfield-object";
-import type { NebulaeParameters } from "./nebulae-object";
+import Nebulae, { type NebulaeParameters } from "./nebulae-object";
 import type SpaceTravelContext from "./space-travel-context";
 import type { Color as ColorValue } from "./types";
 
@@ -20,12 +20,20 @@ export default class SpaceTravelScene extends Transform {
   ) {
     super();
 
-    const { backgroundColor = 0x08000f, starfield: starfieldParameters } = parameters;
+    const {
+      backgroundColor = 0x08000f,
+      starfield: starfieldParameters,
+      nebulae: nebulaeParameters
+    } = parameters;
 
     const starfield = new Starfield(gl, context, starfieldParameters);
+    const nebulae = new Nebulae(gl, context, nebulaeParameters);
 
     this.camera = this.createCamera(gl);
     this.addChild(this.camera);
+    // Nebula meshes carry renderOrder 0 and the starfield 1, so the nebulae
+    // draw behind regardless of child insertion order.
+    this.camera.addChild(nebulae);
     this.camera.addChild(starfield);
 
     const [r, g, b] = new Color(backgroundColor);
