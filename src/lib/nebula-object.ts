@@ -27,8 +27,8 @@ export default class Nebula extends Mesh {
     });
 
     // The X rotation reproduces the cone.glb node transform that was baked
-    // out of the raw arrays; the rest is scene placement. (Y is 0, so the
-    // Euler order difference between three's XYZ and OGL's YXZ is moot.)
+    // out of the raw arrays; the rest is scene placement. (Y is 0, so OGL's
+    // YXZ Euler order resolves the same as a plain XYZ here.)
     this.rotation.set(Math.PI / 2, 0, -Math.PI);
     this.scale.set(2, 1, 2);
     this.position.z -= 5;

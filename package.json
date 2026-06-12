@@ -36,7 +36,7 @@
   "keywords": [
     "webgl",
     "canvas",
-    "threejs",
+    "ogl",
     "space",
     "stars",
     "lightspeed"
@@ -44,13 +44,11 @@
   "dependencies": {
     "modern-normalize": "^3.0.1",
     "ogl": "^1.0.11",
-    "three": "^0.127.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@ai-hero/sandcastle": "^0.7.0",
     "@microsoft/api-extractor": "^7.58.8",
-    "@types/three": "^0.127.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
     "prettier": "^3.8.4",

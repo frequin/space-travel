@@ -97,14 +97,14 @@ export default class SpaceTravel {
     const renderer = new Renderer({ canvas, dpr });
     // OGL's Renderer constructor writes an inline 300x150 width/height onto the
     // canvas, which would override the consumer's stylesheet. Clear it so CSS
-    // layout stays with the consumer (matching three's setSize updateStyle=false).
+    // layout stays with the consumer.
     canvas.style.width = "";
     canvas.style.height = "";
     return renderer;
   }
 
-  // Mirrors three's renderer.setSize(w, h, /*updateStyle*/ false): drawing
-  // buffer follows DPR, CSS layout is left to the consumer's stylesheet.
+  // Resizes the drawing buffer to follow DPR while leaving CSS layout to the
+  // consumer's stylesheet (we deliberately never touch canvas.style here).
   private setSize(): void {
     const width = this.canvas.offsetWidth;
     const height = this.canvas.offsetHeight;

@@ -1,5 +1,5 @@
-// Park-Miller LCG, matching three's MathUtils.seededRandom() sequence and
-// initial seed so the seeded star layout is identical.
+// Park-Miller LCG reproducing the original seeded-random sequence and initial
+// seed (multiplier 16807, modulus 2^31-1) so the seeded star layout is identical.
 const lcgModulus = 2147483647; // 2^31 - 1
 const lcgMultiplier = 16807;
 let seed = 1234567;
