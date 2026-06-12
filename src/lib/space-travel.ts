@@ -94,7 +94,13 @@ export default class SpaceTravel {
 
   private createRenderer(canvas: HTMLCanvasElement): Renderer {
     const dpr = Math.min(window.devicePixelRatio, 1.5);
-    return new Renderer({ canvas, dpr });
+    const renderer = new Renderer({ canvas, dpr });
+    // OGL's Renderer constructor writes an inline 300x150 width/height onto the
+    // canvas, which would override the consumer's stylesheet. Clear it so CSS
+    // layout stays with the consumer (matching three's setSize updateStyle=false).
+    canvas.style.width = "";
+    canvas.style.height = "";
+    return renderer;
   }
 
   // Mirrors three's renderer.setSize(w, h, /*updateStyle*/ false): drawing
