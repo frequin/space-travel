@@ -13,10 +13,12 @@ const xoConfig = [
       // Keep hex colour literals and small numeric constants readable instead of
       // forcing `0xff_00_42`-style grouping.
       "unicorn/numeric-separators-style": "off",
-      // Three.js exposes shader uniform values as `any`, so arithmetic on them
-      // and narrowing loader results to `Mesh` are unavoidable.
+      // Three.js and OGL both type shader uniforms as `any`, so arithmetic on
+      // them, `.value` member access, and narrowing loader results to `Mesh`
+      // are unavoidable.
       "@typescript-eslint/restrict-plus-operands": "off",
       "@typescript-eslint/no-unsafe-type-assertion": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/consistent-type-definitions": ["error", "interface"]
     }
   },

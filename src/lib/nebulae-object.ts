@@ -1,4 +1,4 @@
-import { Group } from "three";
+import { type OGLRenderingContext, Transform } from "ogl";
 import Nebula, { type NebulaParameters } from "./nebula-object";
 import type SpaceTravelContext from "./space-travel-context";
 
@@ -34,16 +34,17 @@ const defaultNebulaeParameters: NebulaeParameters = [
   }
 ];
 
-export default class Nebulae extends Group {
+export default class Nebulae extends Transform {
   constructor(
+    gl: OGLRenderingContext,
     context: SpaceTravelContext,
     parameters: NebulaeParameters = defaultNebulaeParameters
   ) {
     super();
 
     for (const nebulaParameters of parameters) {
-      const nebula = new Nebula(context, nebulaParameters);
-      this.add(nebula);
+      const nebula = new Nebula(gl, context, nebulaParameters);
+      this.addChild(nebula);
     }
   }
 }

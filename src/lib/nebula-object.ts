@@ -1,59 +1,40 @@
-import { type Mesh, Object3D } from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { Geometry, Mesh, type OGLRenderingContext } from "ogl";
+import { coneIndices, conePositions, coneUvs } from "./cone-geometry";
 import NebulaMaterial, { type NebulaMaterialParameters } from "./nebula-material";
 import type SpaceTravelContext from "./space-travel-context";
 
-export interface NebulaParameters extends NebulaMaterialParameters {
-  coneModelUrl?: string;
-}
+export type NebulaParameters = NebulaMaterialParameters;
 
-export default class Nebula extends Object3D {
-  constructor(context: SpaceTravelContext, parameters: NebulaParameters) {
-    super();
+const createConeGeometry = (gl: OGLRenderingContext): Geometry =>
+  new Geometry(gl, {
+    position: { data: conePositions, size: 3 },
+    uv: { data: coneUvs, size: 2 },
+    index: { data: coneIndices }
+  });
 
-    void this.createConeModel(context, parameters);
-  }
-
-  async createConeModel(
+export default class Nebula extends Mesh {
+  constructor(
+    gl: OGLRenderingContext,
     context: SpaceTravelContext,
     parameters: NebulaParameters = {}
-  ): Promise<void> {
-    const {
-      coneModelUrl = "https://webgl-space-travel.requin.pro/cone.glb",
-      textureUrl,
-      colorRange,
-      opacityRange,
-      repeatOffsetRange,
-      fallOffDistance,
-      speedRange,
-      rotationSpeedRange
-    } = parameters;
-    const {
-      scene: {
-        children: [coneModel]
-      }
-    } = await new GLTFLoader().loadAsync(coneModelUrl);
-    const coneModelMesh = coneModel as Mesh;
+  ) {
+    const program = new NebulaMaterial(gl, context, parameters);
 
-    const material = new NebulaMaterial(context, {
-      textureUrl,
-      colorRange,
-      opacityRange,
-      repeatOffsetRange,
-      fallOffDistance,
-      speedRange,
-      rotationSpeedRange
+    super(gl, {
+      geometry: createConeGeometry(gl),
+      program,
+      renderOrder: 0
     });
 
-    coneModelMesh.material = material;
-    coneModelMesh.scale.set(2, 1, 2);
-    coneModelMesh.position.z -= 5;
-    coneModelMesh.rotation.z = -Math.PI;
+    // The X rotation reproduces the cone.glb node transform that was baked
+    // out of the raw arrays; the rest is scene placement. (Y is 0, so OGL's
+    // YXZ Euler order resolves the same as a plain XYZ here.)
+    this.rotation.set(Math.PI / 2, 0, -Math.PI);
+    this.scale.set(2, 1, 2);
+    this.position.z -= 5;
 
-    coneModelMesh.onBeforeRender = () => {
-      material.update();
-    };
-
-    this.add(coneModelMesh);
+    this.onBeforeRender(() => {
+      program.update();
+    });
   }
 }
