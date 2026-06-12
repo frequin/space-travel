@@ -1,6 +1,6 @@
 {
   "name": "space-travel",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "WebGL space scene with lightspeed warp effect",
   "license": "The Unlicense",
   "repository": "frequin/space-travel",
