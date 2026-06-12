@@ -1,6 +1,12 @@
 export const vertexShader = `
+attribute vec3 position;
+attribute vec2 uv;
 attribute float corner;
 attribute float colorMix;
+
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
 
 varying vec2 vUv;
 varying vec3 vColor;
@@ -112,6 +118,8 @@ void main() {
 `;
 
 export const fragmentShader = `
+precision highp float;
+
 varying vec2 vUv;
 varying vec3 vColor;
 
