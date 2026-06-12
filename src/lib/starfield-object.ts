@@ -61,26 +61,11 @@ export default class Starfield extends Mesh {
         depth: 40
       },
       container,
-      colorRange,
-      thicknessRange,
-      rayLengthRange,
-      speedRange,
-      stretchFactorRange,
-      shakeSpeedFactor,
-      shakeStrengthFactor
+      ...materialParameters
     } = parameters;
 
     const geometry = createGeometry(gl, count, containerLength, containerDepth);
-    const program = new StarfieldMaterial(gl, context, {
-      container,
-      colorRange,
-      thicknessRange,
-      rayLengthRange,
-      speedRange,
-      stretchFactorRange,
-      shakeSpeedFactor,
-      shakeStrengthFactor
-    });
+    const program = new StarfieldMaterial(gl, context, { container, ...materialParameters });
 
     super(gl, {
       geometry,
