@@ -1,7 +1,7 @@
 /** @type {import('xo').FlatXoConfig} */
 const xoConfig = [
   {
-    ignores: [".sandcastle/**", "src/lib/cone-geometry.ts"]
+    ignores: [".sandcastle/**"]
   },
   {
     space: true,
